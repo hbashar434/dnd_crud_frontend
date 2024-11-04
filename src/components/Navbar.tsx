@@ -5,6 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
+import Link from "next/link";
 
 const Navbar = () => {
   const theme = useTheme();
@@ -20,20 +21,22 @@ const Navbar = () => {
       <Toolbar
         sx={{ height: "100%", display: "flex", justifyContent: "right" }}
       >
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#ffffff",
-            color: theme.palette.primary.main,
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            "&:hover": {
-              backgroundColor: "#f0f0f0",
-              boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.15)",
-            },
-          }}
-        >
-          User List
-        </Button>
+        <Link href="/user-list" style={{ textDecoration: "none" }}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#ffffff",
+              color: theme.palette.primary.main,
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+                boxShadow: "0px 4px 16px rgba(0, 0, 0, 0.15)",
+              },
+            }}
+          >
+            User List
+          </Button>
+        </Link>
       </Toolbar>
     </AppBar>
   );

@@ -3,7 +3,8 @@ import { Button, Box } from "@mui/material";
 import UserTable from "@/components/UserTable";
 import { fetchAllUsers } from "@/lib/user";
 import { User } from "@/types/userTypes";
-import AddIcon from "@mui/icons-material/Add"; // Import the Add icon
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 
 interface UserListResponse {
   statusCode: number;
@@ -27,16 +28,18 @@ const UserListPage = async () => {
         <Button variant="contained" color="primary">
           User List
         </Button>
-        <Button
-          variant="contained"
-          style={{
-            backgroundColor: "#729e5a",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <AddIcon style={{ color: "#fff", marginRight: 4 }} /> Add User
-        </Button>
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#729e5a",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <AddIcon style={{ color: "#fff", marginRight: 4 }} /> Add User
+          </Button>
+        </Link>
       </Box>
       <UserTable users={userList} />
     </section>
