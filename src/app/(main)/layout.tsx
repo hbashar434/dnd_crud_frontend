@@ -7,9 +7,17 @@ const MainPage = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <Box component="section">
+    <Box
+      component="section"
+      sx={{
+        maxWidth: "1280px",
+        margin: "0 auto",
+      }}
+    >
       <Navbar />
-      <Box mt={10}>{children}</Box>
+      <Box mt={10} px={5}>
+        {children}
+      </Box>
     </Box>
   );
 };
