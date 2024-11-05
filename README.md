@@ -21,15 +21,18 @@ cd dnd_crud_frontend
 
 **Install the dependencies:**
 
-````bash
+```bash
 npm install
-
-
+```
 
 If you encounter peer dependency issues, try:
 
 ```bash
 npm install --legacy-peer-deps
 
+```
 
-````
+```bash
+npm run dev
+
+```
