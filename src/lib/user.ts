@@ -1,16 +1,10 @@
+import { UserFormInputs } from "@/types/userTypes";
 import { handleApi } from "./apiHandler";
 
-const apiURL = process.env.API_URL;
+const apiURL = "http://localhost:8000/api/v1";
 
 // create a user
-export const createUser = async (userData: {
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  email: string;
-  dateOfBirth: string;
-  phone: string;
-}) => {
+export const createUser = async (userData: UserFormInputs) => {
   try {
     const response = await fetch(`${apiURL}/users`, {
       method: "POST",

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   Box,
@@ -7,36 +8,49 @@ import {
   Typography,
   IconButton,
   Grid,
+  Snackbar,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useForm } from "react-hook-form";
+import { UserFormInputs } from "@/types/userTypes";
+import { createUser } from "@/lib/user";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { SnackbarCloseReason } from "@mui/material/Snackbar";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const UserForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    displayName: "",
-    email: "",
-    dateOfBirth: "",
-    phone: "",
-  });
+  const { register, handleSubmit, reset } = useForm<UserFormInputs>();
+  const [open, setOpen] = useState(false); // State to control Snackbar visibility
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const onSubmit = async (data: UserFormInputs) => {
+    const res = await createUser(data);
+    console.log(res);
+    if (res.success) {
+      reset();
+      setOpen(true); // Open the Snackbar on success
+    }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("Form Data:", formData);
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false); // Close the Snackbar
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: "100%",
         margin: "auto",
@@ -76,42 +90,30 @@ const UserForm = () => {
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="First Name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
+            {...register("firstName", { required: true })}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
+            {...register("lastName", { required: true })}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="Display Name"
-            name="displayName"
-            value={formData.displayName}
-            onChange={handleChange}
+            {...register("displayName", { required: true })}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="Email"
-            name="email"
             type="email"
-            value={formData.email}
-            onChange={handleChange}
+            {...register("email", { required: true })}
             fullWidth
-            required
           />
         </Grid>
       </Grid>
@@ -120,24 +122,18 @@ const UserForm = () => {
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="Date of Birth"
-            name="dateOfBirth"
             type="date"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
+            {...register("dateOfBirth", { required: true })}
             InputLabelProps={{ shrink: true }}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <TextField
             label="Phone"
-            name="phone"
             type="tel"
-            value={formData.phone}
-            onChange={handleChange}
+            {...register("phone", { required: true })}
             fullWidth
-            required
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3} />
@@ -153,6 +149,13 @@ const UserForm = () => {
           </Button>
         </Grid>
       </Grid>
+
+      {/* Snackbar for success alert */}
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          User created successfully!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
